@@ -14,8 +14,6 @@
 ![Screenshot 2024-12-13 214500](https://github.com/user-attachments/assets/dad04515-cd82-4a7a-b59b-a2b75bb7d490)
 # **Data Mahasiswa ketika sudah terupdate**
 ![Screenshot 2024-12-13 214524](https://github.com/user-attachments/assets/4c09b745-148c-469e-bf50-cd9b02cc93cb)
-# **Data Mahasiswa ketika sudah terupdate**
-![Screenshot 2024-12-13 214533](https://github.com/user-attachments/assets/33420245-3804-4f1b-a265-cc977cc976be)
 # **Muncul AlertDialog ketika klik button detele**
 ![Screenshot 2024-12-13 214533](https://github.com/user-attachments/assets/d412290c-8684-46eb-9fa7-ecedc450822b)
 # **Data terhapus ketika klik yes pada alertdialog**
