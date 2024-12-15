@@ -13,6 +13,11 @@ class MahasiswaViewModel(private val repositoryMhs: RepositoryMhs):ViewModel(){
 
 }
 
+data class MhsUIState(
+    val mahasiswaEvent: MahasiswaEvent = MahasiswaEvent(),
+    val isEntryValid: FormErrorState = FormErrorState(),
+    val snackBarMessage : String? = null,
+)
 
 data class FormErrorState(
     val nim:String?=null,
