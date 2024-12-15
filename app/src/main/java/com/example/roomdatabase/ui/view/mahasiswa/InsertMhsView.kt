@@ -43,3 +43,121 @@ object  DestinasiInsert : AlamatNavigasi{
     override val route :String ="insert_mhs"
 }
 
+
+@Preview(showBackground = true)
+@Composable
+fun FormMahasiswa(
+    mahasiswaEvent: MahasiswaEvent = MahasiswaEvent(),
+    onValueChange: (MahasiswaEvent) -> Unit = {},
+    errorState: FormErrorState = FormErrorState(),
+    modifier: Modifier = Modifier
+){
+    val JenisKelamin = listOf("Laki-laki", "Perempuan")
+    val Kelas = listOf("A", "B", "C", "D", "E")
+
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.nama,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(nama = it))
+            },
+            label = { Text("Nama") },
+            isError = errorState.nama!=null,
+            placeholder = { Text("Masukkan Nama") }
+        )
+        Text(
+            text = errorState.nama ?:"",
+            color = Color.Red
+        )
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.nim,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(nim = it))
+            },
+            label = { Text("NIM") },
+            isError = errorState.nim!=null,
+            placeholder = { Text("Masukkan NIM")},
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Text(
+            text = errorState.nim ?:"",
+            color = Color.Red
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Jenis Kelamin")
+        Row (
+            modifier = Modifier.fillMaxWidth()
+        ){
+            JenisKelamin.forEach{jk ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ){
+                    RadioButton(
+                        selected = mahasiswaEvent.jeniskelamin == jk,
+                        onClick = {
+                            onValueChange(mahasiswaEvent.copy(jeniskelamin = jk))
+                        },
+                    )
+
+                    Text(text = jk)
+                }
+            }
+        }
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.alamat,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(alamat = it))
+            },
+            label = { Text("Alamat") },
+            isError = errorState.alamat!=null,
+            placeholder = { Text("Masukkan Alamat") }
+        )
+        Text(
+            text = errorState.alamat ?:"",
+            color = Color.Red
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Kelas")
+        Row (
+            modifier = Modifier.fillMaxWidth()
+        ){
+            Kelas.forEach{kelas ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ){
+                    RadioButton(
+                        selected = mahasiswaEvent.kelas == kelas,
+                        onClick = {
+                            onValueChange(mahasiswaEvent.copy(kelas = kelas))
+                        },
+                    )
+
+                    Text(text = kelas)
+                }
+            }
+        }
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.angkatan,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(angkatan = it))
+            },
+            label = { Text("Angkatan") },
+            isError = errorState.angkatan!=null,
+            placeholder = { Text("Masukkan Angkatan") }
+        )
+        Text(
+            text = errorState.angkatan ?:"",
+            color = Color.Red
+        )
+    }
+}
