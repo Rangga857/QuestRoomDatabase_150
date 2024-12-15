@@ -10,7 +10,57 @@ import com.example.roomdatabase.repository.RepositoryMhs
 import kotlinx.coroutines.launch
 
 class MahasiswaViewModel(private val repositoryMhs: RepositoryMhs):ViewModel(){
+    var uiState by mutableStateOf(MhsUIState())
 
+    //memperbarui state berdasarkan input pengguna
+    fun updateState(mahasiswaEvent: MahasiswaEvent){
+        uiState= uiState.copy(
+            mahasiswaEvent=mahasiswaEvent
+        )
+    }
+
+    //function untuk validasi data
+    fun validateFields():Boolean{
+        val event = uiState.mahasiswaEvent
+        val erorState = FormErrorState(
+            nim = if (event.nim.isNotEmpty()) null else "NIM tidak boleh kosong",
+            nama = if (event.nama.isNotEmpty()) null else " Nama tidak boleh kosong",
+            jeniskelamin = if(event.jeniskelamin.isNotEmpty()) null else "Jenis kelamin tidak boleh kosong",
+            alamat = if(event.alamat.isNotEmpty()) null else "Alamat tidak boleh kosong",
+            kelas = if(event.kelas.isNotEmpty()) null else "Kelas tidak boleh kosong",
+            angkatan = if(event.angkatan.isNotEmpty()) null else "Angkatan tidak boleh kosong"
+        )
+        uiState =uiState.copy(isEntryValid = erorState)
+        return erorState.isValid()
+    }
+
+    fun saveData(){
+        val  currentEvent = uiState.mahasiswaEvent
+        if (validateFields()){
+            viewModelScope.launch {
+                try {
+                    repositoryMhs.insertMhs(currentEvent.toMahasiswaEntity())
+                    uiState = uiState.copy(
+                        snackBarMessage = "Data Berhasil Disimpan",
+                        mahasiswaEvent = MahasiswaEvent(),
+                        isEntryValid = FormErrorState()
+                    )
+                } catch (e: Exception){
+                    uiState =uiState.copy(
+                        snackBarMessage = "Data Gagal Disimpan"
+                    )
+                }
+            }
+        }
+        else{
+            uiState = uiState.copy(
+                snackBarMessage = "Input tidak valid. Periksa kembali data yang anda masukkan"
+            )
+        }
+    }
+    fun resetSnackBarMessage(){
+        uiState=uiState.copy(snackBarMessage = null)
+    }
 }
 
 data class MhsUIState(
