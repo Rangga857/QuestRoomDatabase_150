@@ -44,6 +44,81 @@ import com.example.roomdatabase.ui.viewmodel.PenyediaViewModel
 import kotlinx.coroutines.launch
 
 
+@Composable
+fun BodyHomeMhsView(
+    homeUiState: HomeUiState,
+    onClick: (String) -> Unit = { },
+    modifier: Modifier = Modifier
+){
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    when{
+        homeUiState.isLoading -> {
+
+            Box (
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                CircularProgressIndicator()
+            }
+        }
+        homeUiState.isError -> {
+            LaunchedEffect(homeUiState.errorMessage) {
+                homeUiState.errorMessage?.let { message ->
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(message)
+                    }
+                }
+            }
+        }
+
+        homeUiState.listMhs.isEmpty() -> {
+            Box (
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                Text(
+                    text = "Tidak ada data mahasiswa.",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+        else ->{
+            ListMahasiswa(
+                listMhs = homeUiState.listMhs,
+                onClick = {
+                    onClick(it)
+                    println(it)
+                },
+                modifier = modifier
+            )
+        }
+    }
+}
+
+@Composable
+fun ListMahasiswa(
+    listMhs: List<Mahasiswa>,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = { }
+){
+    LazyColumn(
+        modifier = modifier
+    ) {
+       items(
+           items = listMhs,
+           itemContent = {mhs ->
+               CardMhs(
+                   mhs = mhs,
+                   onClick = { onClick(mhs.nim)}
+               )
+           }
+       )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardMhs(
