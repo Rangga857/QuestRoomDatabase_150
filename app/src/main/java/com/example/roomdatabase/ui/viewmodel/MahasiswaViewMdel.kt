@@ -14,6 +14,16 @@ class MahasiswaViewModel(private val repositoryMhs: RepositoryMhs):ViewModel(){
 }
 
 
+
+//menyimpan input form ke dalam entity
+fun MahasiswaEvent.toMahasiswaEntity(): Mahasiswa = Mahasiswa(
+    nim = nim,
+    nama = nama,
+    jeniskelamin = jeniskelamin,
+    alamat = alamat,
+    kelas = kelas,
+    angkatan = angkatan,
+)
 //data class variabel yang merupakan data input form
 data class MahasiswaEvent(
     val nim : String ="",
