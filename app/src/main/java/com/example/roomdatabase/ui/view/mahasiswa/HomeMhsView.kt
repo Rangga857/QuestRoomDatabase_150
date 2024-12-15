@@ -43,6 +43,50 @@ import com.example.roomdatabase.ui.viewmodel.HomeUiState
 import com.example.roomdatabase.ui.viewmodel.PenyediaViewModel
 import kotlinx.coroutines.launch
 
+@Composable
+fun HomeMhsView(
+    viewModel: HomeMhsViewModel = viewModel(factory = PenyediaViewModel.Factory),
+    onAddMhs : () ->Unit = { },
+    onDetailClick: (String) -> Unit = { },
+    modifier: Modifier = Modifier
+){
+    Scaffold(
+        modifier= Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .padding(top = 18.dp),
+        topBar = {
+            TopAppBar(
+                judul = "Daftar Mahasiswa",
+                showBackButton = false,
+                onBack = { },
+                modifier = modifier
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onAddMhs,
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Tambah Mahasiswa",
+                )
+            }
+        }
+    ) { innerPadding ->
+        val homeUiState by viewModel.homeUIState.collectAsState()
+
+        BodyHomeMhsView(
+            homeUiState = homeUiState,
+            onClick = {
+                onDetailClick(it)
+            },
+            modifier = Modifier.padding(innerPadding)
+        )
+    }
+}
 
 @Composable
 fun BodyHomeMhsView(
