@@ -43,8 +43,32 @@ object  DestinasiInsert : AlamatNavigasi{
     override val route :String ="insert_mhs"
 }
 
-
-
+@Composable
+fun InsertBodyMhs(
+    modifier: Modifier = Modifier,
+    onValueChange: (MahasiswaEvent) -> Unit,
+    uiState: MhsUIState,
+    onClick: ()-> Unit
+){
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        FormMahasiswa(
+            mahasiswaEvent = uiState.mahasiswaEvent,
+            onValueChange = onValueChange,
+            errorState = uiState.isEntryValid,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = onClick,
+            modifier = Modifier.fillMaxWidth(),
+            ) {
+            Text("Simpan")
+        }
+    }
+}
 @Preview(showBackground = true)
 @Composable
 fun FormMahasiswa(
