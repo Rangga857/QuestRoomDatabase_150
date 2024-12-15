@@ -11,4 +11,7 @@ import com.example.roomdatabase.data.entity.Mahasiswa
 @Database(entities = [Mahasiswa::class], version = 1, exportSchema =  false)
 abstract class KrsDatabase : RoomDatabase() {
 
+    abstract fun mahasiswaDao(): MahasiswaDao
+
+
 }
