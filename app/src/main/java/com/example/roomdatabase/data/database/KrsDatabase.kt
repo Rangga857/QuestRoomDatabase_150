@@ -13,5 +13,19 @@ abstract class KrsDatabase : RoomDatabase() {
 
     abstract fun mahasiswaDao(): MahasiswaDao
 
+    companion object{
+        @Volatile
+        private var Instace: KrsDatabase?=null
 
+        fun getDatabase(context: Context): KrsDatabase{
+            return (Instace ?: synchronized(this){
+                Room.databaseBuilder(
+                    context,
+                    KrsDatabase::class.java, //Class Database
+                    "KrsDatabase" //nama database
+                )
+                    .build().also { Instace= it }
+            })
+        }
+    }
 }
