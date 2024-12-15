@@ -44,6 +44,68 @@ object  DestinasiInsert : AlamatNavigasi{
 }
 
 @Composable
+fun InsertMhsView(
+    onBack: () -> Unit,
+    onNavigate: () -> Unit,
+    modifier: Modifier=Modifier,
+    viewModel: MahasiswaViewModel = viewModel(factory = PenyediaViewModel.Factory)
+){
+    val uiState = viewModel.uiState
+    val snackbarHostState = remember {SnackbarHostState()}
+    val coroutineScope = rememberCoroutineScope()
+
+    //Observasi perubahan snackbarMessage
+    LaunchedEffect(uiState.snackBarMessage) {
+        uiState.snackBarMessage?.let {message ->
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(message) //Tampilkan snackbar
+                viewModel.resetSnackBarMessage()
+            }
+        }
+    }
+    Scaffold (
+        modifier=modifier,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        topBar = {
+            TopAppBar(
+                judul = "Tambah Mahasiswa",
+                showBackButton = true,
+                onBack = onBack,
+                modifier = modifier
+            )
+        }
+    ) {
+            padding ->
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp)
+        ) {
+
+            InsertBodyMhs(
+                uiState = uiState,
+                onValueChange = {updateEvent ->
+                    viewModel.updateState(updateEvent)
+                },
+                onClick = {
+                    coroutineScope.launch {
+                        if (viewModel.validateFields()){
+                            viewModel.saveData()
+                            delay(500)
+                            withContext(Dispatchers.Main){
+                                onNavigate()
+                            }
+                        }
+                    }
+                }
+            )
+        }
+    }
+}
+
+
+@Composable
 fun InsertBodyMhs(
     modifier: Modifier = Modifier,
     onValueChange: (MahasiswaEvent) -> Unit,
